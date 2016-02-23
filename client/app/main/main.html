@@ -1,0 +1,20 @@
+<div>This is the main view.</div>
+
+<div ng-controller="MainCtrl">
+
+
+    <div ng-repeat="c in furnitures" class="column">
+      <span>{{c.title}}</span>
+      <div class="furniture {{c.type}}" drag="c" dragClone="true"></div>
+    </div>
+
+    <div class="grid">
+      <div class="row" ng-repeat="items in grid | chunkBy:5">
+		<div class="cell" ng-repeat="i in items" >
+			<div class="furniture" drop="i" dropStyle="furnitureDrop" ng-class="i.type" drag="i">
+			{{i.index}}
+			</div>
+		</div>
+      </div>
+    </div>
+</div>
