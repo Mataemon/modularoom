@@ -48,9 +48,13 @@ angular.module('modularoomApp')
     type: "desk"
   }];
   
-  socket.syncUpdates('thing',grid, function(event, item, array){$scope.$apply()});
+  socket.syncUpdates('furniture',grid, function(event, item, array){
+	  console.log(event, item, array, grid);
+	  //$scope.$apply()
+	  });
 
-  $rootScope.$on('dropEvent', function(evt, dragged, dropped) {
+  $scope.$on('dropEvent', function(evt, dragged, dropped) {
+	  evt.preventDefault();
 	  if(dragged.clone)
 		  $scope.grid[dropped.index].type = dragged.type;
 	  else
@@ -59,22 +63,29 @@ angular.module('modularoomApp')
 		  $scope.grid[dropped.index].type = dragged.type;
 		  $scope.grid[oldIndex].type = "empty";
 	}
-    $scope.$apply();
+	console.log(evt, dragged, dropped,$scope.grid);
+    //$scope.$apply();
 	$scope.sendGrid();
   });
-  $rootScope.$on('dropOnBody', function(evt, dragged, dropped, ui) {
+  $scope.$on('dropOnBody', function(evt, dragged, dropped, ui) {
 	  
 	  //ui.draggable.remove();
 		  var oldIndex = dragged.index
 		  $scope.grid[oldIndex].type = "empty";
-    
+    console.log('dropOnBody');
     $scope.$apply();
   });
   $scope.sendGrid = function(){
-	  console.log($scope.grid);
-	  socket.socket.emit('save', {
-      grid: $scope.grid
-    });
+	  
+	  var tempGrid = {
+		  name: 'pipo',
+		  furnitures: $scope.grid
+	  };
+	  //socket.socket.emit('grid:save', tempGrid);
+	  
+	  for(var k =0; k < $scope.grid.length ; k++){
+		  socket.socket.emit('furniture:save', $scope.grid[k]);
+	  }
   }
 
 }]);

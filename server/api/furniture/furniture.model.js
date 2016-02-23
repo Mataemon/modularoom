@@ -2,10 +2,10 @@
 
 var mongoose = require('bluebird').promisifyAll(require('mongoose'));
 
-var ThingSchema = new mongoose.Schema({
+var FurnitureSchema = new mongoose.Schema({
   index: Number,
   title: String,
   type: String
 });
 
-export default mongoose.model('Thing', ThingSchema);
+export default mongoose.model('Furniture', FurnitureSchema);

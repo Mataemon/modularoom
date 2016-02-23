@@ -17,7 +17,8 @@ function onConnect(socket) {
   });
 
   // Insert sockets below
-  require('../api/thing/thing.socket').register(socket);
+  require('../api/grid/grid.socket').register(socket);
+  require('../api/furniture/furniture.socket').register(socket);
 
 }
 
