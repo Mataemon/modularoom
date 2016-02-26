@@ -22,6 +22,7 @@ angular.module('modularoomApp')
     var j = getIndex(i);
 	
     grid.push({
+
 	index: j,
 	  title: "Vide",
       type: "empty"
@@ -47,31 +48,40 @@ angular.module('modularoomApp')
     title: "Bureau",
     type: "desk"
   }];
-  
-  socket.syncUpdates('furniture',grid, function(event, item, array){
-	  console.log(event, item, array, grid);
+
+  $scope.furnitureList = [];
+
+/*
+  socket.syncUpdates('furniture',$scope.grid, function(event, item, array){
+	  console.log(event, item, array, $scope.grid);
 	  //$scope.$apply()
 	  });
+*/
 
   $scope.$on('dropEvent', function(evt, dragged, dropped) {
 	  evt.preventDefault();
-	  if(dragged.clone)
+	  if(dragged.clone){
 		  $scope.grid[dropped.index].type = dragged.type;
+		  socket.socket.emit('furniture:save', $scope.grid[dropped.index]);
+	  }
 	  else
 	  {
 		  var oldIndex = dragged.index
 		  $scope.grid[dropped.index].type = dragged.type;
+		  socket.socket.emit('furniture:save', $scope.grid[dropped.index]);
 		  $scope.grid[oldIndex].type = "empty";
+		  socket.socket.emit('furniture:remove', $scope.grid[oldIndex]);
 	}
-	console.log(evt, dragged, dropped,$scope.grid);
-    //$scope.$apply();
-	$scope.sendGrid();
+	//console.log(evt, dragged, dropped,$scope.grid);
+    $scope.$apply();
+	//$scope.sendGrid();
   });
   $scope.$on('dropOnBody', function(evt, dragged, dropped, ui) {
 	  
 	  //ui.draggable.remove();
 		  var oldIndex = dragged.index
 		  $scope.grid[oldIndex].type = "empty";
+		  socket.socket.emit('furniture:remove', $scope.grid[oldIndex]);
     console.log('dropOnBody');
     $scope.$apply();
   });
@@ -86,6 +96,34 @@ angular.module('modularoomApp')
 	  for(var k =0; k < $scope.grid.length ; k++){
 		  socket.socket.emit('furniture:save', $scope.grid[k]);
 	  }
+	  
   }
+socket.socket.emit('furniture:getGrid', $scope.grid);
+
+socket.socket.on('furniture:getGrid', function (array) {
+	
+	for (var i = 0; i < array.length; i++) {
+	
+	$scope.grid.splice(array[i].index, 1, array[i]);
+	/*
+		var oldItem = _.find($scope.grid, {index: array[i].index});
+		var index = $scope.grid.indexOf(oldItem);
+		console.log(array[i].index, index);
+          if (oldItem) {
+            $scope.grid.splice(index, 1, array[i]);
+          }
+		  */
+  }
+});
+
+socket.socket.on('furniture:save', function (item) {
+            $scope.grid.splice(item.index, 1, item);
+});
+socket.socket.on('furniture:remove', function (item) {
+	console.log(item);
+	item.type = "empty";
+	console.log(item);
+	$scope.grid.splice(item.index, 1, item);
+});
 
 }]);

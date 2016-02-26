@@ -15,17 +15,25 @@ export function register(socket) {
   for (var i = 0, eventsLength = events.length; i < eventsLength; i++) {
     var event = events[i];
     var listener = createListener('furniture:' + event, socket);
-
-	console.log(event);
 	
     FurnitureEvents.on(event, listener);
     socket.on('disconnect', removeListener(event, listener));
   }
   socket.on('furniture:save', function(doc){
-	  console.log(doc);
-  Furniture.find({}).removeAsync()
+  Furniture.find({index: doc.index}).removeAsync()
   .then(() => {
     Furniture.create(doc)
+  })
+  });
+  socket.on('furniture:remove', function(doc){
+	  console.log(doc);
+  Furniture.find({index: doc.index}).removeAsync()
+  });
+  
+  socket.on('furniture:getGrid', function(doc){
+
+  Furniture.find({}, function(err, doc){
+	  socket.emit('furniture:getGrid', doc);
   })
   });
 }
@@ -33,7 +41,7 @@ export function register(socket) {
 
 function createListener(event, socket) {
   return function(doc) {
-	  
+	  console.log(event, doc);
     socket.emit(event, doc);
   };
 }
