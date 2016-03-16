@@ -26,8 +26,9 @@ export function register(socket) {
   })
   });
   socket.on('furniture:remove', function(doc){
-	  console.log(doc);
-  Furniture.find({index: doc.index}).removeAsync()
+	Furniture.findOne({index: doc.index}, function(err, doc){
+		doc.remove();
+	});
   });
   
   socket.on('furniture:getGrid', function(doc){

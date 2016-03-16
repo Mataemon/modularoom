@@ -32,19 +32,18 @@
   background-color: white;
 }
 
-.cell {
+.gridcell {
   width: 50px;
   height: 50px;
   display: table-cell;
   border: 1px solid black;
 }
 
-.row {
+.gridrow {
   display: table-row;
 }
 
 .grid {
   display: table;
-  margin-left: 25px;
   border-collapse: collapse;
 }

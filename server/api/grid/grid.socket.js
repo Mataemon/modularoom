@@ -28,6 +28,20 @@ export function register(socket) {
     Grid.create(doc)
   })
   */
+  
+  });
+  
+   socket.on('grid:get', function(doc){
+	   
+	  Grid.findOne({_id:doc}, function(err, doc){
+		  console.log(doc);
+		socket.emit('grid:get', doc);
+		})
+  });
+  socket.on('grid:list', function(doc){
+	  Grid.find({}, function(err, doc){
+		socket.emit('grid:list', doc);
+		})
   });
 }
 

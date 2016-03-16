@@ -51,6 +51,8 @@ angular.module('modularoomApp')
 
   $scope.furnitureList = [];
 
+  $scope.gridSamples = [];
+
 /*
   socket.syncUpdates('furniture',$scope.grid, function(event, item, array){
 	  console.log(event, item, array, $scope.grid);
@@ -101,7 +103,6 @@ angular.module('modularoomApp')
 socket.socket.emit('furniture:getGrid', $scope.grid);
 
 socket.socket.on('furniture:getGrid', function (array) {
-	
 	for (var i = 0; i < array.length; i++) {
 	
 	$scope.grid.splice(array[i].index, 1, array[i]);
@@ -126,4 +127,36 @@ socket.socket.on('furniture:remove', function (item) {
 	$scope.grid.splice(item.index, 1, item);
 });
 
+$scope.saveGrid = function() {
+	var obj = {
+		name: 'Courante',
+	info: '',
+	furnitures: $scope.grid
+	};
+	socket.socket.emit('grid:save',obj);
+};
+
+$scope.getGrid = function(grid) {
+	console.log(grid.id);
+	socket.socket.emit('grid:get',grid.id);
+};
+socket.socket.on('grid:get', function(data){
+		console.log(data);
+		for (var i = 0; i < data.furnitures.length; i++) {
+			$scope.grid.splice(data.furnitures[i].index, 1, data.furnitures[i]);
+		}
+	});
+	
+$scope.loadGrids = function() {
+	socket.socket.emit('grid:list',null);
+};
+socket.socket.on('grid:list', function(data){
+		$scope.gridSamples = [];
+		//console.log(data);
+		for (var i = 0; i < data.length; i++) {
+			//console.log(data[i].id);
+			$scope.gridSamples.push({id:data[i]._id,name:data[i].name, image:data[i].image});
+		}
+		console.log($scope.gridSamples);
+	});
 }]);

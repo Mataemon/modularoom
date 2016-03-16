@@ -11,6 +11,7 @@ var FurnitureSchema = new mongoose.Schema({
 var GridSchema = new mongoose.Schema({
   name: String,
   info: String,
+  image: String,
   furnitures: [FurnitureSchema]
 });
 
