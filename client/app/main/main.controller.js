@@ -1,4 +1,4 @@
-'use strict';
+﻿'use strict';
 
 angular.module('modularoomApp')
   .controller('MainCtrl', ["$scope", "$rootScope", "socket", function($scope, $rootScope, socket) {

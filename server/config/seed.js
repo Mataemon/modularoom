@@ -1,4 +1,4 @@
-/**
+﻿/**
  * Populate DB with sample data on server start
  * to disable, edit config/environment/index.js, and set `seedDB: false`
  */
@@ -140,7 +140,7 @@ Grid.find({}).removeAsync()
         }
     ]
     }, {
-      "name" : "R�union",
+      "name" : "Réunion",
     "info" : "",
     "image" : "reunion.png",
     "furnitures" : [ 
