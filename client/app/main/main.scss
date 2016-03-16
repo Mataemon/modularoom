@@ -1,4 +1,6 @@
-
+.pointer {
+	cursor: pointer;
+}
 .column {
   display: inline-block;
   margin: 50px;
@@ -7,15 +9,19 @@
 .furniture {
   width: 50px;
   height: 50px;
-
 }
 
 .chair {
   background-color: red;
 }
-
+.chair:hover {
+  cursor: -webkit-grab;
+}
 .desk {
   background-color: blue;
+}
+.desk:hover {
+  cursor: -webkit-grab;
 }
 
 .furnitureDrag {
@@ -46,4 +52,5 @@
 .grid {
   display: table;
   border-collapse: collapse;
+  margin-bottom: 20px;
 }

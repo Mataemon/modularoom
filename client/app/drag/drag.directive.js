@@ -13,9 +13,9 @@ angular.module('modularoomApp')
 	  
 	  if(scope.dragData.type != "empty")
 		  if(scope.dragClone)
-			element.draggable({ revert: "invalid", helper: "clone", stack: ".furniture" });
+			element.draggable({ revert: "invalid", helper: "clone", stack: ".furniture", cursor:"-webkit-grabbing" });
 		else
-			element.draggable({stack: ".furniture"});
+			element.draggable({stack: ".furniture", cursor:"-webkit-grabbing"});
 	  
       element.bind('dragstart', function(evt) {
         $rootScope.draggedElement = scope.dragData;

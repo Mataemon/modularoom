@@ -52,6 +52,8 @@ angular.module('modularoomApp')
   $scope.furnitureList = [];
 
   $scope.gridSamples = [];
+  
+  $scope.isCollapsed = false;
 
 /*
   socket.syncUpdates('furniture',$scope.grid, function(event, item, array){
@@ -101,6 +103,7 @@ angular.module('modularoomApp')
 	  
   }
 socket.socket.emit('furniture:getGrid', $scope.grid);
+socket.socket.emit('grid:list',null);
 
 socket.socket.on('furniture:getGrid', function (array) {
 	for (var i = 0; i < array.length; i++) {
